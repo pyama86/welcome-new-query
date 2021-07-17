@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --log-output=TABLE --general-log
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    ports:
+    - 3306:3306
+  workload:
+    image: mysql:5.7
+    environment:
+      TZ: 'Asia/Tokyo'
+    command: [
+      "mysqlslap",
+      "--iterations=2",
+      "--number-int-cols=4",
+      "--number-char-cols=4",
+      "--user=root",
+      "--host=db",
+      "--password=root",
+      "--engine=innodb",
+      "--auto-generate-sql",
+      "--number-of-queries=1000",
+      "--auto-generate-sql-load-type=read",
+    ]
+    external_links:
+      - db
+    depends_on:
+      - db
+  parser:
+    build: .
+    volumes:
+      - .:/opt/dev
+    environment:
+      TZ: 'Asia/Tokyo'
+      MYSQL_HOST: "db"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+      OUTPUT_PATH: "/opt/dev/output.txt"
+    external_links:
+      - db
+    depends_on:
+      - workload
+    command: ["/opt/dev/run.sh", "/opt/dev/result"]
