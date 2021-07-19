@@ -61,7 +61,7 @@ jobs:
             <details><summary>Show Queries</summary>
 
             \`\`\`sql
-            ${process.env.NEW_QUERIES}
+            ${process.env.NEW_QUERIES.replace(/\\n/g, '\n')}
             \`\`\`
 
             </details>
