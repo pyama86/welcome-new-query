@@ -26,11 +26,10 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-  args:
-    - '${{ inputs.db-host}}'
-    - '${{ inputs.db-user}}'
-    - '${{ inputs.db-pasword}}'
-    - '${{ inputs.save-path}}'
+    - '${{ inputs.db-host }}'
+    - '${{ inputs.db-user }}'
+    - '${{ inputs.db-pasword }}'
+    - '${{ inputs.save-path }}'
 branding:
   icon: 'search'
   color: 'green'
