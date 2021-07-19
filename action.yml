@@ -12,6 +12,8 @@ runs:
   outputs:
     new_queries:
       descriptions: 'difference queries'
+    save_path:
+      description: 'result file save path'
   args:
     - '${{ inputs.save_path}}'
 branding:
