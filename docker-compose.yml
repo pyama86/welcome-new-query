@@ -4,10 +4,8 @@ services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: test
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: docker
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --log-output=TABLE --general-log
     healthcheck:
@@ -27,7 +25,6 @@ services:
       "--number-char-cols=4",
       "--user=root",
       "--host=db",
-      "--password=root",
       "--engine=innodb",
       "--auto-generate-sql",
       "--number-of-queries=1000",
@@ -45,7 +42,6 @@ services:
       TZ: 'Asia/Tokyo'
       MYSQL_HOST: "db"
       MYSQL_USER: "root"
-      MYSQL_PASSWORD: "root"
       OUTPUT_PATH: "/opt/dev/output.txt"
     external_links:
       - db
