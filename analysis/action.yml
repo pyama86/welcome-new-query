@@ -6,14 +6,14 @@ inputs:
     description: 'result file save path'
     required: false
     default: '/new_queries'
+outputs:
+  new_queries:
+    descriptions: 'difference queries'
+  save_path:
+    description: 'result file save path'
 runs:
   using: 'docker'
   image: 'docker://pyama86/welcome-new-queries:latest'
-  outputs:
-    new_queries:
-      descriptions: 'difference queries'
-    save_path:
-      description: 'result file save path'
   args:
     - '${{ inputs.save_path}}'
 branding:
