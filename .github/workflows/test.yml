@@ -21,7 +21,7 @@ jobs:
           --number-int-cols=4 \
           --number-char-cols=4 \
           --user=root \
-          --host=localhost\
+          --host=localhost \
           --engine=innodb \
           --auto-generate-sql \
           --number-of-queries=1000 \
