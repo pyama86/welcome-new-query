@@ -37,14 +37,11 @@ services:
   parser:
     build: ./analysis/
     volumes:
-      - .:/opt/dev
+      - ./analysis:/opt/dev
     environment:
       TZ: 'Asia/Tokyo'
-      MYSQL_HOST: "db"
-      MYSQL_USER: "root"
-      OUTPUT_PATH: "/opt/dev/output.txt"
     external_links:
       - db
     depends_on:
       - workload
-    command: ["/opt/dev/run.sh", "/opt/dev/result"]
+    command: ["db", "root", "", "/opt/dev/result"]
