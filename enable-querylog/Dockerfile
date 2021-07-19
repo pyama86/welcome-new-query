@@ -1,4 +1,4 @@
-FROM mysql:5.6
+FROM mysql:8
 
 COPY run.sh /run.sh
 ENTRYPOINT ["/run.sh"]
