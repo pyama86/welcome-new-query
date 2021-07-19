@@ -56,7 +56,7 @@ jobs:
 
       - name: Cache default branch result
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        run: cp ./new-queries ~/cache/
+        run: cp "${{ steps.analysis.outputs.save-path }}" ~/cache/
 
       # comment to issue
       - uses: actions/github-script@v4
