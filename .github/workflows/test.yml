@@ -8,11 +8,29 @@ jobs:
     name: Self Action Test
     strategy:
       matrix:
-        mysql: [5.6, 5.7. 8]
-    runs-on: mysql:5.7
+        version: [5.6, 5.7, 8]
+    runs-on: ubuntu-latest
     steps:
+      # setup
+      - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
-      - uses: pyama86/enable-querylog
+
+      # copy last default branch result.
+      - name: cache with default branch result
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/cache
+          key: ${{ runner.os }}
+
+      - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries /new-queries"
+
+      # required
+      - uses: ./enable-querylog
+        with:
+          db-host: db
+
+      # This is an alternative to your test.
       - name: Runs benchmark
         run: |
           mysqlslap \
@@ -20,22 +38,68 @@ jobs:
           --number-int-cols=4 \
           --number-char-cols=4 \
           --user=root \
-          --host=db \
-          --password=root \
+          --host=127.0.0.1 \
           --engine=innodb \
           --auto-generate-sql \
           --number-of-queries=1000 \
           --auto-generate-sql-load-type=read
 
+      # required
       - name: Runs looking new query
-        uses: ./
+        id: analysis
+        uses: ./analysis
         with:
-          save-path: /tmp/new_queries
+          save-path: /new-queries
+          db-host: db
+
+      - name: Cache default branch result
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/default' }}
+        run: cp /new-queries ~/cache/
+
+      # comment to issue
+      - uses: actions/github-script@v4
+        if: ${{ github.event_name == 'pull_request' }}
+        # for escape js syntax
+        env:
+          NEW_QUERIES: "${{ steps.analysis.outputs.new-queries }}"
+        with:
+          script: |
+            const opts = github.issues.listComments.endpoint.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            })
+
+            const comments = await github.paginate(opts)
+            for(const comment of comments) {
+              if (comment.user.login === "github-actions[bot]" && comment.body.startsWith("#### New Queries found!")) {
+                return
+              }
+            }
+
+            const output = `#### New Queries found! 📖
+            <details><summary>Show Queries</summary>
+
+            \`\`\`sql
+            ${process.env.NEW_QUERIES.replace(/\\n/g, '\n')}
+            \`\`\`
+
+            </details>
+            `;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output,
+            })
+
     services:
-      database:
-        image: mysql:${{ matrix.os }}
+      db:
+        image: mysql:${{ matrix.version}}
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
         ports:
-          - 3306/tcp
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=10
