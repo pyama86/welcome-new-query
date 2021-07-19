@@ -17,8 +17,8 @@ jobs:
     steps:
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
-      - run: mysql -h 127.0.0.1 --port 3306 -u root -D mysql -sse "select 1"
-      - uses: pyama86/enable-querylog@v0.1.3
+      - run: mysql -h 127.0.0.1 -u root -D mysql -sse "select 1"
+      - uses: pyama86/enable-querylog@v0.1.4
       - name: Runs benchmark
         run: |
           mysqlslap \
