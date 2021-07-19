@@ -17,15 +17,15 @@ jobs:
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
 
-      # copy last default branch result.
-      - name: cache with default branch result
+      # restore last default branch result.
+      - name: Restore from default branch result
         uses: actions/cache@v2
         with:
           path: |
             ~/cache/
           key: ${{ runner.os }}
 
-      - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries /new-queries"
+      - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries ./new-queries"
 
       # required
       - uses: ./enable-querylog
@@ -37,8 +37,8 @@ jobs:
         run: |
           mysqlslap \
           --iterations=2 \
-          --number-int-cols=4 \
-          --number-char-cols=4 \
+          --number-int-cols=5 \
+          --number-char-cols=5 \
           --user=root \
           --host=127.0.0.1 \
           --engine=innodb \
