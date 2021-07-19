@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 OUTPUT_PATH=$1
 
 MYSQL_USER=${MYSQL_USER:-root}
@@ -19,4 +20,6 @@ else
   d=`cat ${OUTPUT_PATH}`
 fi
 
-echo "${d//$'\n'/\\n}"
+d="${d//$'\n'/\\n}"
+echo "::set-output name=new-queries::${d}"
+echo "::set-output name=save-path::${OUTPUT_PATH}"

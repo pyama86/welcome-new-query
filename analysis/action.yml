@@ -6,6 +6,11 @@ inputs:
     description: 'result file save path'
     required: false
     default: '/new-queries'
+outputs:
+  save-path:
+    description: 'result file save path'
+  new-queries:
+    description: 'found new queries'
 runs:
   using: 'docker'
   image: 'Dockerfile'
