@@ -8,16 +8,29 @@ jobs:
     name: Self Action Test
     strategy:
       matrix:
-        #version: [5.6, 5.7, 8]
-        version: [5.6]
+        version: [5.6, 5.7, 8]
     runs-on: ubuntu-latest
     steps:
+      # setup
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
-      - run: mysql -h 127.0.0.1 -u root -D mysql -sse "select 1"
+
+      # copy last default branch result.
+      - name: cache with default branch result
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/cache
+          key: ${{ runner.os }}
+
+      - run: ! test -e ~/cache/new-queries || cp ~/cache/new-queries /new-queries
+
+      # required
       - uses: ./enable-querylog
         with:
           db-host: db
+
+      # This is an alternative to your test.
       - name: Runs benchmark
         run: |
           mysqlslap \
@@ -30,12 +43,20 @@ jobs:
           --auto-generate-sql \
           --number-of-queries=1000 \
           --auto-generate-sql-load-type=read
+
+      # required
       - name: Runs looking new query
         id: analysis
         uses: ./analysis
         with:
           save-path: /new-queries
           db-host: db
+
+      - name: Cache default branch result
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/default' }}
+        run: cp /new-queries ~/cache/
+
+      # comment to issue
       - uses: actions/github-script@v4
         if: ${{ github.event_name == 'pull_request' }}
         # for escape js syntax
