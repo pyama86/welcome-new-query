@@ -58,7 +58,7 @@ jobs:
             <details><summary>Show Queries</summary>
 
             \`\`\`sql
-            ${{ steps.analysis.outputs.new-queries}}
+            ${{ steps.analysis.outputs.new-queries }}
             \`\`\`
 
             </details>
