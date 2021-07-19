@@ -51,7 +51,7 @@ jobs:
 
             const comments = await github.paginate(opts)
             for(const comment of comments) {
-              if (comment.user.login === context.repo.owner && comment.body.startsWith("#### New Queries found!")) {
+              if (comment.user.login === "github-actions[bot]" && comment.body.startsWith("#### New Queries found!")) {
                 return
               }
             }
