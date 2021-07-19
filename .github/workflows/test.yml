@@ -34,7 +34,7 @@ jobs:
       - name: Runs looking new query
         uses: ./analysis
         with:
-          save-path: /tmp/new_queries
+          save-path: /new-queries
     services:
       db:
         image: mysql:${{ matrix.version}}

@@ -5,7 +5,7 @@ inputs:
   save-path:
     description: 'result file save path'
     required: false
-    default: '/new_queries'
+    default: '/new-queries'
 outputs:
   new_queries:
     description: 'difference queries'
