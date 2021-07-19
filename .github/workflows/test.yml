@@ -8,7 +8,7 @@ jobs:
     name: Self Action Test
     strategy:
       matrix:
-        mysql: ["5.6", "5.7". "8"]
+        mysql: [5.6, 5.7. 8]
     runs-on: mysql:5.7
     steps:
       - uses: actions/checkout@v2
