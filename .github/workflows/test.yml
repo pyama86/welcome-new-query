@@ -35,6 +35,30 @@ jobs:
         uses: ./analysis
         with:
           save-path: /new-queries
+      - uses: actions/github-script@v4
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          script: |
+            const opts = github.issues.listComments.endpoint.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            })
+
+            const comments = await github.paginate(opts)
+            for(const comment of comments) {
+              if (comment.user.login === "github-actions[bot]" && comment.body.startsWith("👋 Thanks for reporting!")) {
+                return
+            }
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })
+
     services:
       db:
         image: mysql:${{ matrix.version}}
