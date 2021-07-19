@@ -15,7 +15,7 @@ inputs:
     default: ''
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: pyama/enable-querylog:latest
   args:
     - '${{ inputs.db-host}}'
     - '${{ inputs.db-user}}'

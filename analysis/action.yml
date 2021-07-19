@@ -24,7 +24,7 @@ outputs:
     description: 'found new queries'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: pyama/query-analysis:latest
   args:
     - '${{ inputs.db-host }}'
     - '${{ inputs.db-user }}'
