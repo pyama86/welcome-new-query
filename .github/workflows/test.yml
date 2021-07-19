@@ -38,6 +38,9 @@ jobs:
           save-path: /new-queries
       - uses: actions/github-script@v4
         if: ${{ github.event_name == 'pull_request' }}
+        # for escape js syntax
+        env:
+          NEW_QUERIES: "${{ steps.analysis.outputs.new-queries }}"
         with:
           script: |
             const opts = github.issues.listComments.endpoint.merge({
@@ -58,7 +61,7 @@ jobs:
             <details><summary>Show Queries</summary>
 
             \`\`\`sql
-            ${{ steps.analysis.outputs.new-queries }}
+            ${process.env.NEW_QUERIES}
             \`\`\`
 
             </details>
