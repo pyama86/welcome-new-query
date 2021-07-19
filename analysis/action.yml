@@ -2,20 +2,20 @@ name: 'Welcome NewQuery'
 description: 'looking new query since the last run.'
 author: 'pyama86'
 inputs:
-  save_path:
+  save-path:
     description: 'result file save path'
     required: false
     default: '/new_queries'
 outputs:
   new_queries:
     description: 'difference queries'
-  save_path:
+  save-path:
     description: 'result file save path'
 runs:
   using: 'docker'
-  image: 'docker://pyama86/welcome-new-queries:latest'
+  image: 'Dockerfile'
   args:
-    - '${{ inputs.save_path}}'
+    - '${{ inputs.save-path}}'
 branding:
   icon: 'search'
   color: 'green'
