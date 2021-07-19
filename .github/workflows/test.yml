@@ -11,7 +11,7 @@ jobs:
         version: [5.6, 5.7, 8]
     runs-on: ubuntu-latest
     steps:
-      - run: apt update -qqy && apt install -qqy mysql-client
+      - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
       - uses: pyama86/enable-querylog@v0.1.0
       - name: Runs benchmark
