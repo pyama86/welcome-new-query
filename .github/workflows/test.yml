@@ -32,6 +32,7 @@ jobs:
           --number-of-queries=1000 \
           --auto-generate-sql-load-type=read
       - name: Runs looking new query
+        id: analysis 
         uses: ./analysis
         with:
           save-path: /new-queries
@@ -48,15 +49,26 @@ jobs:
 
             const comments = await github.paginate(opts)
             for(const comment of comments) {
-              if (comment.user.login === "github-actions[bot]" && comment.body.startsWith("👋 Thanks for reporting!")) {
+              if (comment.user.login === context.repo.owner && comment.body.startsWith("#### New Queries found!")) {
                 return
+              }
             }
+
+            const output = `#### New Queries found! 📖
+            <details><summary>Show Queries</summary>
+
+            \`\`\`sql
+            ${ steps.analysis.outcome }
+            \`\`\`
+
+            </details>
+            `;
 
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
+              body: output,
             })
 
     services:

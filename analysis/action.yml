@@ -6,11 +6,6 @@ inputs:
     description: 'result file save path'
     required: false
     default: '/new-queries'
-outputs:
-  new_queries:
-    description: 'difference queries'
-  save-path:
-    description: 'result file save path'
 runs:
   using: 'docker'
   image: 'Dockerfile'

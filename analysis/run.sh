@@ -20,6 +20,4 @@ else
   d=`cat ${OUTPUT_PATH}`
 fi
 
-d="${d//$'\n'/\\n}"
-echo "::set-output name=new-queries::${d}"
-echo "::set-output name=save-path::${OUTPUT_PATH}"
+echo "${d//$'\n'/\\n}"
