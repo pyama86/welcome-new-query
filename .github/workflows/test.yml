@@ -55,7 +55,7 @@ jobs:
           db-host: db
 
       - name: Cache default branch result
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/default' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         run: cp /new-queries ~/cache/
 
       # comment to issue
