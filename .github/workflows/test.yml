@@ -25,7 +25,7 @@ jobs:
             ~/cache/
           key: ${{ runner.os }}
 
-      - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries /new-queries"
+      - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries ./new-queries"
 
       # required
       - uses: ./enable-querylog
