@@ -35,7 +35,7 @@ services:
     depends_on:
       - db
   parser:
-    build: .
+    build: ./analysis/
     volumes:
       - .:/opt/dev
     environment:
