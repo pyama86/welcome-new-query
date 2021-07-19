@@ -51,12 +51,12 @@ jobs:
         id: analysis
         uses: ./analysis
         with:
-          save-path: /new-queries
+          save-path: ./new-queries
           db-host: db
 
       - name: Cache default branch result
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        run: cp /new-queries ~/cache/
+        run: cp ./new-queries ~/cache/
 
       # comment to issue
       - uses: actions/github-script@v4
