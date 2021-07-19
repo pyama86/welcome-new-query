@@ -58,7 +58,7 @@ jobs:
             <details><summary>Show Queries</summary>
 
             \`\`\`sql
-            ${{ steps.analysis.outcome }}
+            ${{ steps.analysis.stdout }}
             \`\`\`
 
             </details>
