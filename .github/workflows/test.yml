@@ -12,7 +12,7 @@ jobs:
     runs-on: mysql:5.7
     steps:
       - uses: actions/checkout@v2
-      - uses: pyama86/enable-querylog
+      - uses: pyama86/enable-querylog@v0.1.0
       - name: Runs benchmark
         run: |
           mysqlslap \
