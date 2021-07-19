@@ -1,0 +1,35 @@
+name: 'Welcome NewQuery'
+description: 'looking new query since the last run.'
+author: 'pyama86'
+inputs:
+  db-host:
+    description: 'db hosname'
+    required: true
+  db-user:
+    description: 'db user'
+    required: false
+    default: 'root'
+  db-password:
+    description: 'db password'
+    required: false
+    default: ''
+  save-path:
+    description: 'result file save path'
+    required: false
+    default: '/new-queries'
+outputs:
+  save-path:
+    description: 'result file save path'
+  new-queries:
+    description: 'found new queries'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - '${{ inputs.db-host }}'
+    - '${{ inputs.db-user }}'
+    - '${{ inputs.db-pasword }}'
+    - '${{ inputs.save-path }}'
+branding:
+  icon: 'search'
+  color: 'green'

@@ -5,3 +5,5 @@ RUN apt update -qqy && \
   apt -qqy  clean autoclean && \
   apt -qqy  autoremove && \
   rm -rf /var/lib/apt/lists/*
+COPY ./run.sh /usr/bin
+ENTRYPOINT ["/usr/bin/run.sh"]
