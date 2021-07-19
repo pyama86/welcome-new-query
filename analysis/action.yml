@@ -8,7 +8,7 @@ inputs:
     default: '/new_queries'
 outputs:
   new_queries:
-    descriptions: 'difference queries'
+    description: 'difference queries'
   save_path:
     description: 'result file save path'
 runs:
