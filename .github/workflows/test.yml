@@ -12,13 +12,13 @@ jobs:
         version: [5.6]
     runs-on: ubuntu-latest
     env:
-      MYSQL_HOST: 127.0.0.1
+      MYSQL_HOST: db
       MYSQL_USER: root
     steps:
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
       - run: mysql -h 127.0.0.1 -u root -D mysql -sse "select 1"
-      - uses: pyama86/enable-querylog@v0.1.4
+      - uses: ./enable-querylog
       - name: Runs benchmark
         run: |
           mysqlslap \
@@ -31,9 +31,8 @@ jobs:
           --auto-generate-sql \
           --number-of-queries=1000 \
           --auto-generate-sql-load-type=read
-
       - name: Runs looking new query
-        uses: ./
+        uses: ./analysis
         with:
           save-path: /tmp/new_queries
     services:

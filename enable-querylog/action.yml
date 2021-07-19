@@ -1,0 +1,9 @@
+name: 'Enable QueryLog'
+description: 'switch on query.log.'
+author: 'pyama86'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'log-out'
+  color: 'green'
