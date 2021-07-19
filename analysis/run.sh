@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 OUTPUT_PATH=$1
 
 MYSQL_USER=${MYSQL_USER:-root}
