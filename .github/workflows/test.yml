@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
 
       # copy last default branch result.
-      - name: cache with default branch result
+      - name: Restore from default branch result
         uses: actions/cache@v2
         with:
           path: |
