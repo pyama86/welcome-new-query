@@ -16,6 +16,10 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - '${{ inputs.db-host}}'
+    - '${{ inputs.db-user}}'
+    - '${{ inputs.db-pasword}}'
 branding:
   icon: 'log-out'
   color: 'green'
