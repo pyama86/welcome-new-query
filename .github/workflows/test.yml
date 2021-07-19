@@ -22,7 +22,6 @@ jobs:
           --number-char-cols=4 \
           --user=root \
           --host=db \
-          --password=root \
           --engine=innodb \
           --auto-generate-sql \
           --number-of-queries=1000 \
