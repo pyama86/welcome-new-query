@@ -16,7 +16,8 @@ jobs:
     steps:
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
-      - uses: pyama86/enable-querylog@v0.1.1
+      - run: mysql -h 127.0.0.1 --port 3306 -u root -D mysql -sse "select 1"
+      - uses: pyama86/enable-querylog@v0.1.2
       - name: Runs benchmark
         run: |
           mysqlslap \
@@ -40,5 +41,5 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
         ports:
-          - 3306/tcp
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=10
