@@ -15,7 +15,7 @@ query="select replace(replace(replace(replace(argument, '\r\n', ''), '\r', ''), 
   sed -e 's/$/;/g' | pt-fingerprint --match-embedded-numbers | sort | uniq > ${OUTPUT_PATH}`
 
 
-if [ `test -e ${OUTPUT_PATH}_base` ]; then
+if [ -e ${OUTPUT_PATH}_base ]; then
   d=`diff -u ${OUTPUT_PATH}_base ${OUTPUT_PATH} | grep ^+ | grep -v ^+++ | sed s/^+//`
 else
   d=`cat ${OUTPUT_PATH}`
