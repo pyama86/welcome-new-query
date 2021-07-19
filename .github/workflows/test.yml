@@ -33,7 +33,7 @@ jobs:
         with:
           save-path: /tmp/new_queries
     services:
-      database:
+      db:
         image: mysql:${{ matrix.version}}
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
