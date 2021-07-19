@@ -13,7 +13,7 @@ jobs:
     steps:
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
-      - uses: pyama86/enable-querylog@v0.1.0
+      - uses: pyama86/enable-querylog@v0.1.1
       - name: Runs benchmark
         run: |
           mysqlslap \
@@ -21,7 +21,7 @@ jobs:
           --number-int-cols=4 \
           --number-char-cols=4 \
           --user=root \
-          --host=localhost \
+          --host=db \
           --engine=innodb \
           --auto-generate-sql \
           --number-of-queries=1000 \
