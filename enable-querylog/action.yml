@@ -1,6 +1,18 @@
 name: 'Enable QueryLog'
 description: 'switch on query.log.'
 author: 'pyama86'
+inputs:
+  db-host:
+    description: 'db hosname'
+    required: true
+  db-user:
+    description: 'db user'
+    required: false
+    default: 'root'
+  db-password:
+    description: 'db password'
+    required: false
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
