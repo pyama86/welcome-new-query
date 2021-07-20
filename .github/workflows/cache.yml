@@ -36,8 +36,8 @@ jobs:
         run: |
           mysqlslap \
           --iterations=2 \
-          --number-int-cols=2 \
-          --number-char-cols=2 \
+          --number-int-cols=3 \
+          --number-char-cols=3 \
           --user=root \
           --host=127.0.0.1 \
           --engine=innodb \
@@ -89,12 +89,14 @@ jobs:
             </details>
             `;
 
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output,
-            })
+            if(process.env.NEW_QUERIES) {
+              github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output,
+              })
+            }
 
     services:
       db:
