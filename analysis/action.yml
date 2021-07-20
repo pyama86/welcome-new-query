@@ -17,6 +17,19 @@ inputs:
     description: 'result file save path'
     required: false
     default: '/new-queries'
+  aws-access-key-id:
+    description: 'aws access key id'
+    required: false
+  aws-secret-access-key:
+    description: 'aws secret access key'
+    required: false
+  aws-region:
+    description: 'aws region'
+    required: false
+    default: 'ap-northeast-1'
+  s3-bucket:
+    description: 'aws s3 bucket'
+    required: false
 outputs:
   save-path:
     description: 'result file save path'
@@ -30,6 +43,10 @@ runs:
     - '${{ inputs.db-user }}'
     - '${{ inputs.db-pasword }}'
     - '${{ inputs.save-path }}'
+    - '${{ inputs.aws-access-key-id }}'
+    - '${{ inputs.aws-secret-access-key }}'
+    - '${{ inputs.aws-region }}'
+    - '${{ inputs.s3-bucket }}'
 branding:
   icon: 'search'
   color: 'green'
