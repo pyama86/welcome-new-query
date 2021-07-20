@@ -27,8 +27,8 @@ jobs:
         run: |
           mysqlslap \
           --iterations=2 \
-          --number-int-cols=3 \
-          --number-char-cols=3 \
+          --number-int-cols=4 \
+          --number-char-cols=4 \
           --user=root \
           --host=127.0.0.1 \
           --engine=innodb \
