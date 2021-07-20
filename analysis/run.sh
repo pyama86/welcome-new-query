@@ -14,7 +14,7 @@ FILENAME=`basename $OUTPUT_PATH`
 [ -n "$AWS_ACCESS_KEY_ID" ] && \
 [ -n "$AWS_SECRET_ACCESS_KEY" ] && \
 [ -n "$AWS_REGION" ] && \
-[ -n "$S3_BUCKET" ] {
+[ -n "$S3_BUCKET" ] && {
   USE_S3=1
   aws s3 cp s3://$S3_BUCKET/$FILENAME $OUTPUT_PATH --quiet
 }
@@ -34,7 +34,7 @@ else
   d=`cat ${OUTPUT_PATH}`
 fi
 
-[ -n "$USE_S3" ] {
+[ -n "$USE_S3" ] && {
   aws s3 cp ${OUTPUT_PATH} s3://$S3_BUCKET/$FILENAME  --quiet
 }
 
