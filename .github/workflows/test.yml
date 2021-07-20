@@ -1,0 +1,55 @@
+name: Tag Test
+
+on:
+  push:
+
+jobs:
+  test:
+    name: Self Action Test
+    strategy:
+      matrix:
+        version: [5.6, 5.7, 8]
+    runs-on: ubuntu-latest
+    steps:
+      # setup
+      - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
+      - uses: actions/checkout@v2
+
+      # required
+      - uses: pyama86/welcome-new-query/enable-querylog@v1
+        with:
+          db_host: db
+
+      # This is an alternative to your test.
+      - name: Runs benchmark
+        run: |
+          mysqlslap \
+          --iterations=2 \
+          --number-int-cols=3 \
+          --number-char-cols=3 \
+          --user=root \
+          --host=127.0.0.1 \
+          --engine=innodb \
+          --auto-generate-sql \
+          --number-of-queries=1000 \
+          --auto-generate-sql-load-type=read
+
+      # required
+      - name: Runs looking new query
+        id: analysis
+      - uses: pyama86/welcome-new-query/analysis@v1
+        with:
+          save_path: ./new-queries
+          db_host: db
+          aws_access_key_id : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          s3_bucket: welcome-newquery
+
+    services:
+      db:
+        image: mysql:${{ matrix.version}}
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=10
