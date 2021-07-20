@@ -1,0 +1,98 @@
+name: Test with S3
+
+on:
+  pull_request:
+  push:
+    branches: main
+
+jobs:
+  test:
+    name: Self Action Test
+    strategy:
+      matrix:
+        version: [5.6, 5.7, 8] runs-on: ubuntu-latest steps:
+      # setup
+      - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
+      - uses: actions/checkout@v2
+
+      # required
+      - uses: ./enable-querylog
+        with:
+          db_host: db
+
+      # This is an alternative to your test.
+      - name: Runs benchmark
+        run: |
+          mysqlslap \
+          --iterations=2 \
+          --number-int-cols=2 \
+          --number-char-cols=2 \
+          --user=root \
+          --host=127.0.0.1 \
+          --engine=innodb \
+          --auto-generate-sql \
+          --number-of-queries=1000 \
+          --auto-generate-sql-load-type=read
+
+      # required
+      - name: Runs looking new query
+        id: analysis
+        uses: ./analysis
+        with:
+          save_path: ./new-queries
+          db_host: db
+          aws_access_key_id : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          s3_bucket: welcome-newquery
+
+      - name: Cache default branch result
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: mkdir -p ~/cache && cp "${{ steps.analysis.outputs.save-path }}" ~/cache/
+
+      # comment to issue
+      - uses: actions/github-script@v4
+        if: ${{ github.event_name == 'pull_request' }}
+        # for escape js syntax
+        env:
+          NEW_QUERIES: "${{ steps.analysis.outputs.new-queries }}"
+        with:
+          script: |
+            const opts = github.issues.listComments.endpoint.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            })
+
+            const comments = await github.paginate(opts)
+            for(const comment of comments) {
+              if (comment.user.login === "github-actions[bot]" && comment.body.startsWith("#### New Queries found!")) {
+                return
+              }
+            }
+
+            const output = `#### New Queries found! 📖
+            <details><summary>Show Queries</summary>
+
+            \`\`\`sql
+            ${process.env.NEW_QUERIES.replace(/\\n/g, '\n')}
+            \`\`\`
+
+            </details>
+            `;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output,
+            })
+
+    services:
+      db:
+        image: mysql:${{ matrix.version}}
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=10

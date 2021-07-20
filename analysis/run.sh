@@ -1,14 +1,15 @@
 #!/bin/bash
 set -x
-DB_HOST=$1
-DB_USER=$2
-DB_PASSWORD=$3
-OUTPUT_PATH=$4
-export AWS_ACCESS_KEY_ID=$5
-export AWS_SECRET_ACCESS_KEY=$6
-export AWS_REGION=$7
-S3_BUCKET=$8
+DB_HOST=$INPUT_DB_HOST
+DB_USER=$INPUT_DB_USER
+DB_PASSWORD=$INPUT_DB_PASSWORD
+OUTPUT_PATH=$INPUT_SAVE_PATH
+export AWS_ACCESS_KEY_ID=$INPUT_AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$INPUT_AWS_SECRET_ACCESS_KEY
+export AWS_REGION=$INPUT_AWS_REGION
+S3_BUCKET=$INPUT_S3_BUCKET
 
+DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
 FILENAME=`basename $OUTPUT_PATH`
 
 [ -n "$AWS_ACCESS_KEY_ID" ] && \
@@ -34,7 +35,7 @@ else
   d=`cat ${OUTPUT_PATH}`
 fi
 
-[ -n "$USE_S3" ] && {
+[ -n "$USE_S3" ] && [ "$GITHUB_EVENT_NAME" = "push" ] && [ "$GITHUB_REF" = "refs/heads/${$DEFAULT_BRANCH}" ] &&{
   aws s3 cp ${OUTPUT_PATH} s3://$S3_BUCKET/$FILENAME  --quiet
 }
 

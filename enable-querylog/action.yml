@@ -2,24 +2,20 @@ name: 'Enable QueryLog'
 description: 'switch on query.log.'
 author: 'pyama86'
 inputs:
-  db-host:
+  db_host:
     description: 'db hosname'
     required: true
-  db-user:
+  db_user:
     description: 'db user'
     required: false
     default: 'root'
-  db-password:
+  db_password:
     description: 'db password'
     required: false
     default: ''
 runs:
   using: 'docker'
   image: pyama/enable-querylog:latest
-  args:
-    - '${{ inputs.db-host}}'
-    - '${{ inputs.db-user}}'
-    - '${{ inputs.db-pasword}}'
 branding:
   icon: 'log-out'
   color: 'green'

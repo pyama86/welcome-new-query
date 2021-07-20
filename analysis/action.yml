@@ -2,51 +2,42 @@ name: 'Welcome NewQuery'
 description: 'looking new query since the last run.'
 author: 'pyama86'
 inputs:
-  db-host:
+  db_host:
     description: 'db hosname'
     required: true
-  db-user:
+  db_user:
     description: 'db user'
     required: false
     default: 'root'
-  db-password:
+  db_password:
     description: 'db password'
     required: false
     default: ''
-  save-path:
+  save_path:
     description: 'result file save path'
     required: false
     default: '/new-queries'
-  aws-access-key-id:
+  aws_access_key_id:
     description: 'aws access key id'
     required: false
-  aws-secret-access-key:
+  aws_secret_access_key:
     description: 'aws secret access key'
     required: false
-  aws-region:
+  aws_region:
     description: 'aws region'
     required: false
     default: 'ap-northeast-1'
-  s3-bucket:
+  s3_bucket:
     description: 'aws s3 bucket'
     required: false
 outputs:
-  save-path:
+  save_path:
     description: 'result file save path'
-  new-queries:
+  new_queries:
     description: 'found new queries'
 runs:
   using: 'docker'
   image: pyama/query-analysis:latest
-  args:
-    - '${{ inputs.db-host }}'
-    - '${{ inputs.db-user }}'
-    - '${{ inputs.db-pasword }}'
-    - '${{ inputs.save-path }}'
-    - '${{ inputs.aws-access-key-id }}'
-    - '${{ inputs.aws-secret-access-key }}'
-    - '${{ inputs.aws-region }}'
-    - '${{ inputs.s3-bucket }}'
 branding:
   icon: 'search'
   color: 'green'
