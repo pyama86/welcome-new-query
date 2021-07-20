@@ -37,13 +37,13 @@ steps:
   - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries /new-queries"
 
   # required
-  - uses: pyama86/welcome-new-query/enable-querylog@v1.0.0
+  - uses: pyama86/welcome-new-query/enable-querylog@v1
     with:
       db_host: db
 
   - name: Runs looking new query
     id: analysis
-  - uses: pyama86/welcome-new-query/analysis@v1.0.0
+  - uses: pyama86/welcome-new-query/analysis@v1
     with:
       save_path: /new-queries
       db_host: db
