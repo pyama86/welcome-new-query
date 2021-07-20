@@ -16,9 +16,8 @@ FILENAME=`basename $OUTPUT_PATH`
 [ -n "$AWS_REGION" ] && \
 [ -n "$S3_BUCKET" ] {
   USE_S3=1
-  aws s3 cp s3://$S3_BUCKET/$FILENAME ./  --quiet
+  aws s3 cp s3://$S3_BUCKET/$FILENAME $OUTPUT_PATH --quiet
 }
-
 
 test -e ${OUTPUT_PATH} && cp ${OUTPUT_PATH} ${OUTPUT_PATH}_base
 
