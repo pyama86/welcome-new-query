@@ -13,6 +13,7 @@ It is very useful for your query perfomance check before production release.
 1. Exporting query.log to db table.(enable-querylog action)
 2. Run Your Test.
 3. Check query.log to db table.(analysis action)
+4. Save result to cache or S3
 
 ## Need to
 
@@ -21,7 +22,7 @@ This is because my implementation extracts the diff by comparing it with the res
 
 ## usage
 
-[You had better check test actions in this repository](./.github/workflows/test.yml)
+[You had better check test actions in this repository](./.github/workflows/s3.yml)
 
 ```yml
 steps:
@@ -36,16 +37,16 @@ steps:
   - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries /new-queries"
 
   # required
-  - uses: pyama86/welcom-new-query/enable-querylog@v1.0.0
+  - uses: pyama86/welcome-new-query/enable-querylog@v1.0.0
     with:
-      db-host: db
+      db_host: db
 
   - name: Runs looking new query
     id: analysis
-  - uses: pyama86/welcom-new-query/analysis@v1.0.0
+  - uses: pyama86/welcome-new-query/analysis@v1.0.0
     with:
-      save-path: /new-queries
-      db-host: db
+      save_path: /new-queries
+      db_host: db
 
   - name: Cache default branch result
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
@@ -53,15 +54,13 @@ steps:
 ```
 
 ## parameter
-- db-host
+- db_host
+- db_user
+- db_password(optional)
+- db_password(optional)
 
-set db hostname.
+- aws_access_key_id(optional)
+- aws_secret_access_key(optional)
+- s3_bucket(optional)
 
-- db-user
 
-set db connect user.
-
-- db-password(optional)
-
-set db connect password.
-if you set empty and we use empty password.
