@@ -37,7 +37,7 @@ jobs:
       # required
       - name: Runs looking new query
         id: analysis
-      - uses: pyama86/welcome-new-query/analysis@v1
+        uses: pyama86/welcome-new-query/analysis@v1
         with:
           save_path: ./new-queries
           db_host: db
