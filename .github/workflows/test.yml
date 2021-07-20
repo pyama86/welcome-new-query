@@ -18,14 +18,9 @@ jobs:
       - uses: actions/checkout@v2
 
       # restore last default branch result.
-      - name: Restore from default branch result
-        uses: actions/cache@v2
+      - uses: actions/download-artifact@v2
         with:
-          path: |
-            ~/cache/
-          key: ${{ runner.os }}
-
-      - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries ./new-queries"
+          name: main-branch-result
 
       # required
       - uses: ./enable-querylog
@@ -54,9 +49,12 @@ jobs:
           save-path: ./new-queries
           db-host: db
 
-      - name: Cache default branch result
+      - name: Save default branch result
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        run: mkdir -p ~/cache && cp "${{ steps.analysis.outputs.save-path }}" ~/cache/
+        uses: actions/upload-artifact@v2
+        with:
+          name: main-branch-result
+          path: ${{ steps.analysis.outputs.save-path }}
 
       # comment to issue
       - uses: actions/github-script@v4
