@@ -17,16 +17,6 @@ jobs:
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
 
-      # restore last default branch result.
-      - name: Restore from default branch result
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/cache/
-          key: ${{ runner.os }}
-
-      - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries ./new-queries"
-
       # required
       - uses: ./enable-querylog
         with:
@@ -37,8 +27,8 @@ jobs:
         run: |
           mysqlslap \
           --iterations=2 \
-          --number-int-cols=6 \
-          --number-char-cols=6 \
+          --number-int-cols=5 \
+          --number-char-cols=5 \
           --user=root \
           --host=127.0.0.1 \
           --engine=innodb \
@@ -53,6 +43,9 @@ jobs:
         with:
           save-path: ./new-queries
           db-host: db
+          aws-access-key-id : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          s3-bucket: welcome-newquery
 
       - name: Cache default branch result
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
