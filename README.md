@@ -57,7 +57,6 @@ steps:
 - db_host
 - db_user
 - db_password(optional)
-- db_password(optional)
 
 - aws_access_key_id(optional)
 - aws_secret_access_key(optional)
