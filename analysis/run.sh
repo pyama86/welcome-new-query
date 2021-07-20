@@ -35,7 +35,7 @@ else
   d=`cat ${OUTPUT_PATH}`
 fi
 
-[ -n "$USE_S3" ] && [ "$GITHUB_EVENT_NAME" = "push" ] && [ "$GITHUB_REF" = "refs/heads/${$DEFAULT_BRANCH}" ] &&{
+[ -n "$USE_S3" ] && [ "$GITHUB_EVENT_NAME" = "push" ] && [ "$GITHUB_REF" = "refs/heads/${DEFAULT_BRANCH}" ] &&{
   aws s3 cp ${OUTPUT_PATH} s3://$S3_BUCKET/$FILENAME  --quiet
 }
 
