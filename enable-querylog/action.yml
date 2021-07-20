@@ -15,7 +15,7 @@ inputs:
     default: ''
 runs:
   using: 'docker'
-  image: pyama/enable-querylog:latest
+  image: 'docker://pyama/enable-querylog:latest'
 branding:
   icon: 'log-out'
   color: 'green'

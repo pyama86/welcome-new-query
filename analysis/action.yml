@@ -37,7 +37,7 @@ outputs:
     description: 'found new queries'
 runs:
   using: 'docker'
-  image: pyama/query-analysis:latest
+  image: 'docker://pyama/analysis:latest'
 branding:
   icon: 'search'
   color: 'green'
