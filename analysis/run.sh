@@ -40,5 +40,5 @@ fi
 }
 
 d="${d//$'\n'/\\n}"
-echo "::set-output name=new-queries::${d}"
-echo "::set-output name=save-path::${OUTPUT_PATH}"
+echo "::set-output name=new_queries::${d}"
+echo "::set-output name=save_path::${OUTPUT_PATH}"
