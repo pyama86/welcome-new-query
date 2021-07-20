@@ -55,14 +55,14 @@ jobs:
 
       - name: Cache default branch result
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        run: mkdir -p ~/cache && cp "${{ steps.analysis.outputs.save-path }}" ~/cache/
+        run: mkdir -p ~/cache && cp "${{ steps.analysis.outputs.save_path }}" ~/cache/
 
       # comment to issue
       - uses: actions/github-script@v4
         if: ${{ github.event_name == 'pull_request' }}
         # for escape js syntax
         env:
-          NEW_QUERIES: "${{ steps.analysis.outputs.new-queries }}"
+          NEW_QUERIES: "${{ steps.analysis.outputs.new_queries }}"
         with:
           script: |
             const opts = github.issues.listComments.endpoint.merge({
