@@ -38,9 +38,9 @@ services:
     depends_on:
       - db
   parser:
-    build: ./analyze/
+    build: .
     volumes:
-      - ./analyze:/opt/dev
+      - .:/opt/dev
     environment:
       TZ: 'Asia/Tokyo'
       INPUT_DB_HOST: 'db'

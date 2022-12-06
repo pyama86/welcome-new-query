@@ -15,10 +15,16 @@ jobs:
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
 
-      # required
-      - uses: pyama86/welcome-new-query/enable-querylog@v1
+      - uses: pyama86/welcome-new-query@v1.1
+        id: analysis
         with:
           db_host: db
+          save_path: ./new-queries
+          db_host: db
+          aws_access_key_id : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          s3_bucket: welcome-newquery
+
 
       # This is an alternative to your test.
       - name: Runs benchmark
@@ -33,17 +39,6 @@ jobs:
           --auto-generate-sql \
           --number-of-queries=1000 \
           --auto-generate-sql-load-type=read
-
-      # required
-      - name: Runs looking new query
-        id: analysis
-        uses: pyama86/welcome-new-query/analysis@v1
-        with:
-          save_path: ./new-queries
-          db_host: db
-          aws_access_key_id : ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          s3_bucket: welcome-newquery
 
     services:
       db:

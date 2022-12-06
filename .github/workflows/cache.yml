@@ -23,13 +23,13 @@ jobs:
         with:
           path: |
             ~/cache/
-          key: ${{ runner.os }}
+          key: ${{ runner.os }}-20221206
       - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries ./new-queries"
 
-      # required
-      - uses: ./enable-querylog
+      - uses: ./
         with:
           db_host: db
+          save_path: ./new-queries
 
       # This is an alternative to your test.
       - name: Runs benchmark
@@ -44,14 +44,6 @@ jobs:
           --auto-generate-sql \
           --number-of-queries=1000 \
           --auto-generate-sql-load-type=read
-
-      # required
-      - name: Runs looking new query
-        id: analysis
-        uses: ./analysis
-        with:
-          save_path: ./new-queries
-          db_host: db
 
       - name: Cache default branch result
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}

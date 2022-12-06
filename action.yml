@@ -37,7 +37,7 @@ outputs:
     description: 'found new queries'
 runs:
   using: 'docker'
-  image: 'docker://pyama/query-analysis:latest'
+  image: 'docker://pyama/query-analysis:v2.0.0'
   entrypoint: '/enable_query_log.sh'
   post-entrypoint: '/analyze.sh'
 

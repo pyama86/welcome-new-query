@@ -18,9 +18,14 @@ jobs:
       - uses: actions/checkout@v2
 
       # required
-      - uses: ./enable-querylog
+      - uses: ./
+        id: analysis
         with:
           db_host: db
+          save_path: ./new-queries
+          aws_access_key_id : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          s3_bucket: welcome-newquery
 
       # This is an alternative to your test.
       - name: Runs benchmark
@@ -36,20 +41,6 @@ jobs:
           --number-of-queries=1000 \
           --auto-generate-sql-load-type=read
 
-      # required
-      - name: Runs looking new query
-        id: analysis
-        uses: ./analysis
-        with:
-          save_path: ./new-queries
-          db_host: db
-          aws_access_key_id : ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          s3_bucket: welcome-newquery
-
-      - name: Cache default branch result
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        run: mkdir -p ~/cache && cp "${{ steps.analysis.outputs.save_path }}" ~/cache/
 
       # comment to issue
       - uses: actions/github-script@v4
