@@ -16,15 +16,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Enable QueryLog Image Push to Docker Hub
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: pyama/enable-querylog:latest
-          context: ./enable-querylog
       - name: Analysis Image Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: pyama/query-analysis:latest
-          context: ./analysis
+          context: ./analyze

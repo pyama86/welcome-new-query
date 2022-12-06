@@ -26,10 +26,16 @@ jobs:
           key: ${{ runner.os }}
       - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries ./new-queries"
 
-      # required
-      - uses: ./enable-querylog
-        with:
-          db_host: db
+      - uses: pyama86/welcome-new-query/analyze@v1.1
+         with:
+           db_host: db
+           save_path: ./new-queries
+           db_host: db
+           aws_access_key_id : ${{ secrets.AWS_ACCESS_KEY_ID }}
+           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+           s3_bucket: welcome-newquery
+
+
 
       # This is an alternative to your test.
       - name: Runs benchmark
