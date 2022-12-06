@@ -8,5 +8,6 @@ RUN apt update -qqy && \
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install
-COPY ./run.sh /usr/bin
-ENTRYPOINT ["/usr/bin/run.sh"]
+COPY ./enable_query_log.sh /
+COPY ./analyze.sh /
+ENTRYPOINT ["/analyze.sh"]

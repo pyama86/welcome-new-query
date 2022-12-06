@@ -5,6 +5,7 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: test
+      MYSQL_ROOT_HOST: '%'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --log-output=TABLE --general-log
@@ -12,10 +13,11 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+    platform: linux/amd64
     ports:
-    - 3306:3306
+    - 23306:3306
   workload:
-    image: mysql:5.7
+    image: mysql:8-debian
     environment:
       TZ: 'Asia/Tokyo'
     command: [
@@ -30,18 +32,21 @@ services:
       "--number-of-queries=1000",
       "--auto-generate-sql-load-type=read",
     ]
+    platform: linux/amd64
     external_links:
       - db
     depends_on:
       - db
   parser:
-    build: ./analysis/
+    build: ./analyze/
     volumes:
-      - ./analysis:/opt/dev
+      - ./analyze:/opt/dev
     environment:
       TZ: 'Asia/Tokyo'
+      INPUT_DB_HOST: 'db'
+      INPUT_DB_USER: 'root'
+      INPUT_SAVE_PATH: "/opt/dev/result"
     external_links:
       - db
     depends_on:
       - workload
-    command: ["db", "root", "", "/opt/dev/result"]
