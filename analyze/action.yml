@@ -38,6 +38,9 @@ outputs:
 runs:
   using: 'docker'
   image: 'docker://pyama/query-analysis:latest'
+  entrypoint: '/enable_query_log.sh'
+  post-entrypoint: '/analyze.sh'
+
 branding:
   icon: 'search'
   color: 'green'
