@@ -15,7 +15,8 @@ jobs:
       - run: sudo apt update -qqy && sudo apt install -qqy mysql-client
       - uses: actions/checkout@v2
 
-      - uses: pyama86/welcome-new-query/analyze@v1.1
+      - uses: pyama86/welcome-new-query@v1.1
+        id: analysis
         with:
           db_host: db
           save_path: ./new-queries

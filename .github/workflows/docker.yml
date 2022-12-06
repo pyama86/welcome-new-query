@@ -20,5 +20,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: pyama/query-analysis:latest
-          context: ./analyze
+          tags: pyama/query-analysis:v1.1
+          context: .
