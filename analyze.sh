@@ -39,5 +39,8 @@ fi
 }
 
 d="${d//$'\n'/\\n}"
-echo "::set-output name=new_queries::${d}"
-echo "::set-output name=save_path::${OUTPUT_PATH}"
+
+echo "name=new_queries::${d}" >> $GITHUB_OUTPUT
+
+echo "name=save_path::${OUTPUT_PATH}" >> $GITHUB_OUTPUT
+
